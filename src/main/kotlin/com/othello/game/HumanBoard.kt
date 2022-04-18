@@ -1,5 +1,6 @@
 package com.othello.game
 
+import com.othello.bit.Bit64
 import java.util.*
 
 private const val DELIMITER = ":"
@@ -18,14 +19,15 @@ class HumanBoard(boardString: String = ""): BitBoard(
     fun isWhiteDisc(col: Int, row: Int) = (colRowToBit(col, row) and board[WHITE]) != 0uL
     fun isEmpty(col: Int, row: Int) = ! (isWhiteDisc(col, row) || isBlackDisc(col,row))
     fun isPlayable(col: Int, row: Int) = (colRowToBit(col, row) and getAllCandidateMoves()) != 0uL
+    fun mustPass() = getAllCandidateMoves() == 0uL
 
     //------------------------------------------------------------------------------------------------------------------
 
     private val moveStack = Stack<Move>()
 
-    fun doMove(col: Int, row: Int) {
+    private fun doMove(moveBit: Bit64) {
         val moves = generateMoves()
-        val moveDone = moves.firstOrNull{colRowToBit(col, row) == it.discPlayed}
+        val moveDone = moves.firstOrNull{moveBit == it.discPlayed}
         if (moveDone != null) {
             doMove(moveDone)
             moveStack.push(moveDone)
@@ -34,9 +36,16 @@ class HumanBoard(boardString: String = ""): BitBoard(
         }
     }
 
+    fun doMove(col: Int, row: Int) {
+        doMove(colRowToBit(col, row))
+    }
+
+    fun doPassMove() {
+        doMove(moveBit = 0uL)
+    }
+
     fun takeBack() {
-        val move = moveStack.pop()
-        takeBack(move)
+        takeBack(moveStack.pop())
     }
 
     fun hasHistory() = moveStack.isNotEmpty()

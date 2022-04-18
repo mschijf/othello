@@ -145,7 +145,8 @@ open class BitBoard (initBoardWhite: Bit64?=null, initBoardBlack: Bit64?=null, i
             moveList.add(Move(allCaptures, bbMove))
             candAll = candAll xor bbMove
         }
-        //todo: pas zet
+        if (moveList.isEmpty())
+            return listOf(Move(discsFlipped = 0uL, discPlayed = 0uL))
         return moveList
     }
 
@@ -178,4 +179,6 @@ open class BitBoard (initBoardWhite: Bit64?=null, initBoardBlack: Bit64?=null, i
         colorToMove = 1 - colorToMove
         board[colorToMove] = board[colorToMove] xor (move.discsFlipped or move.discPlayed)
     }
+
+    //todo: endOfGame method maken (emptyFields == 0uL of twee keer gepast
 }

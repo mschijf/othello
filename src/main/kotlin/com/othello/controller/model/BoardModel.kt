@@ -11,13 +11,14 @@ class BoardModel(board: HumanBoard)  {
     val colorToMove = if (board.isBlackToMove()) Color.BLACK else Color.WHITE
     val takeBackPossible = board.hasHistory()
     val gameFinished = true
+    val mustPass = board.mustPass()
 
     private fun getFieldModel(board: HumanBoard, col: Int, row: Int): FieldModel {
         return FieldModel(
-            col,
-            row,
-            if (board.isWhiteDisc(col, row)) Color.WHITE else  if (board.isBlackDisc(col, row)) Color.BLACK else Color.NONE,
-            board.isPlayable(col,row))
+            col=col,
+            row=row,
+            color=if (board.isWhiteDisc(col, row)) Color.WHITE else if (board.isBlackDisc(col, row)) Color.BLACK else Color.NONE,
+            playable=board.isPlayable(col,row))
     }
 }
 

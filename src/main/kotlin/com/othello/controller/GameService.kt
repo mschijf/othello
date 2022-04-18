@@ -24,6 +24,13 @@ class GameService {
         return BoardModel(board) to board.toBoardString()
     }
 
+    fun doPassMove(boardString: String): Pair<BoardModel, String> {
+//        val board = HumanBoard(boardString)
+        board.doPassMove()
+        return BoardModel(board) to board.toBoardString()
+    }
+
+
     fun takeBackLastMove(boardString: String): Pair<BoardModel, String> {
 //        val board = HumanBoard(boardString)
         board.takeBack()

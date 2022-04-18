@@ -91,8 +91,9 @@
                         <td><div class="square"><div id="whoistomove" class="smalldot"></div></div></td>
                         <td><div class="square"><div id="winner" class="smalldot"></div></div></td>
                         <td><div class="square"><button id="buttonNew" onclick="newGame()">New game</button></div></td>
-                        <td><div class="square"><button id="buttonCompute" onclick="computeMove()">Compute</button></div></td>
                         <td><div class="square"><button id="buttonTakeback" onclick="takebackLastMove()">Take Back</button></div></td>
+                        <td><div class="square"><button id="buttonPassMove" onclick="doPassMove()">Pass Move</button></div></td>
+                        <td><div class="square"><button id="buttonCompute" onclick="computeMove()">Compute Move</button></div></td>
                         <td><div class="square"><input type="checkbox" id="useComputerPlayer" name="useComp" value="useComp"><label for="useComp"> Play vs Computer</label></div></td>
                         <td><div class="square"><input hidden type="number" id="searchDepth" min="1" max="42" step="1" value="7" size="6"></div></td>
                     </tr>
@@ -199,6 +200,7 @@
             }
 
             function disableAllButtons() {
+                document.getElementById("buttonPassMove").disabled = true
                 document.getElementById("buttonCompute").disabled = true
                 document.getElementById("buttonTakeback").disabled = true
             }
@@ -209,6 +211,7 @@
             }
 
             function showActionButtons(board) {
+                document.getElementById("buttonPassMove").disabled = !board.mustPass
                 document.getElementById("buttonCompute").disabled = board.gameFinished
                 document.getElementById("buttonTakeback").disabled = !board.takeBackPossible
             }
@@ -283,6 +286,18 @@
             function takebackLastMove() {
                 var request = new XMLHttpRequest();
                 request.open("POST", "api/v1/move/takeback/");
+                request.onreadystatechange = function() {
+                    if(this.readyState === 4 && this.status === 200) {
+                        var board = JSON.parse(this.responseText);
+                        showBoard(board);
+                    }
+                };
+                request.send();
+            }
+
+            function doPassMove() {
+                var request = new XMLHttpRequest();
+                request.open("POST", "api/v1/move/passmove/");
                 request.onreadystatechange = function() {
                     if(this.readyState === 4 && this.status === 200) {
                         var board = JSON.parse(this.responseText);

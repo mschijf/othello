@@ -45,6 +45,15 @@ class OthelloController @Autowired constructor(private val gameService: GameServ
         return model
     }
 
+    @PostMapping("/move/passmove/")
+    fun doPassMove(httpServletResponse: HttpServletResponse1,
+                         @CookieValue(value = BOARD_COOKIE, defaultValue = DEFAULT_BOARD) boardStatusString: String): BoardModel {
+        val (model, persistanceString) =  gameService.doPassMove(boardStatusString)
+        httpServletResponse.addCookie(getNewCookie(persistanceString))
+        return model
+    }
+
+
 //    @PostMapping("/move/compute/{level}")
 //    fun computeAndExecuteNextMove(httpServletResponse: HttpServletResponse1,
 //                                  @CookieValue(value = BOARD_COOKIE, defaultValue = DEFAULT_BOARD) boardStatusString: String,
