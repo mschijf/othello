@@ -21,7 +21,7 @@ class HumanBoard(boardString: String = ""): BitBoard(
 
     //------------------------------------------------------------------------------------------------------------------
 
-    val moveStack = Stack<Move>()
+    private val moveStack = Stack<Move>()
 
     fun doMove(col: Int, row: Int) {
         val moves = generateMoves()
@@ -38,4 +38,6 @@ class HumanBoard(boardString: String = ""): BitBoard(
         val move = moveStack.pop()
         takeBack(move)
     }
+
+    fun hasHistory() = moveStack.isNotEmpty()
 }

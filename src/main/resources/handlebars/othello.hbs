@@ -145,10 +145,13 @@
                 }
             }
 
-
-            function setElementColor(element, modelColor) {
+            function setElementColor(element, modelColor, playable) {
                 var backgroundColor = toColor(modelColor)
-                element.style.backgroundColor = backgroundColor
+                if (playable) {
+                    element.style.backgroundColor = "rgb(0, 115, 0)"
+                } else {
+                    element.style.backgroundColor = backgroundColor
+                }
                 if (backgroundColor === "white") {
                     element.style.color = "red"
                 } else if (backgroundColor === "black") {
@@ -161,9 +164,9 @@
             function showBoard(board) {
                 showFields(board)
 //                 showLastFieldPlayed(board)
-//                 showWhoIsToMove(board)
+                showWhoIsToMove(board)
 //                 showWinner(board)
-//                 showActionButtons(board)
+                showActionButtons(board)
 //                 showComputerResult(board.searchResult)
 //                 showMiscellanious(board)
             }
@@ -172,8 +175,7 @@
                 for (let row = 0; row < board.fields.length; row++) {
                     for (let col = 0; col < board.fields[row].length; col++) {
                         var elem = document.getElementById(toFieldId(col, row));
-                        elem.innerText=""
-                        setElementColor(elem, board.fields[row][col].color)
+                        setElementColor(elem, board.fields[row][col].color, board.fields[row][col].playable)
                         if (board.fields[row][col].playable) {
                             elem.style.cursor = "pointer"
                             elem.style.pointerEvents = 'auto';

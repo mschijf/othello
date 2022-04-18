@@ -9,6 +9,8 @@ class BoardModel(board: HumanBoard)  {
 
     val fields = Array(MAX_ROW) { row -> Array(MAX_COL) { col -> getFieldModel(board, col, row) } }
     val colorToMove = if (board.isBlackToMove()) Color.BLACK else Color.WHITE
+    val takeBackPossible = board.hasHistory()
+    val gameFinished = true
 
     private fun getFieldModel(board: HumanBoard, col: Int, row: Int): FieldModel {
         return FieldModel(
