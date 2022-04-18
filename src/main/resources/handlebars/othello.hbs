@@ -132,7 +132,7 @@
 
         <script>
             function toFieldId(col, row) {
-                return "field" + col + "" + ({{numberOfRows}}-row-1)
+                return "field" + col + "" + row
             }
 
             function toColor(modelColor) {
@@ -264,7 +264,7 @@
         <script>
             function executeMove(columnNumber, rowNumber) {
                 var request = new XMLHttpRequest();
-                request.open("POST", "api/v1/move/" + columnNumber);
+                request.open("POST", "api/v1/move/" + columnNumber + "/" + rowNumber);
                 request.onreadystatechange = function() {
                     if(this.readyState === 4 && this.status === 200) {
                         var board = JSON.parse(this.responseText);
