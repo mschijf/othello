@@ -6,42 +6,40 @@ import org.springframework.stereotype.Service
 
 @Service
 class GameService {
-    var board = HumanBoard()
-
-    fun getBoard(boardString: String): Pair<BoardModel, String> {
-//        val board = HumanBoard(boardString)
-        return BoardModel(board) to board.toBoardString()
+    fun getBoard(boardStatusString: String): Pair<BoardModel, String> {
+        val board = HumanBoard(boardStatusString)
+        return BoardModel(board) to board.toBoardStatusString()
     }
 
     fun getNewBoard(): Pair<BoardModel, String> {
-        board = HumanBoard()
-        return BoardModel(board) to board.toBoardString()
+        val board = HumanBoard()
+        return BoardModel(board) to board.toBoardStatusString()
     }
 
-    fun doMove(boardString: String, column: Int, row: Int): Pair<BoardModel, String> {
-//        val board = HumanBoard(boardString)
+    fun doMove(boardStatusString: String, column: Int, row: Int): Pair<BoardModel, String> {
+        val board = HumanBoard(boardStatusString)
         board.doMove(column, row)
-        return BoardModel(board) to board.toBoardString()
+        return BoardModel(board) to board.toBoardStatusString()
     }
 
-    fun doPassMove(boardString: String): Pair<BoardModel, String> {
-//        val board = HumanBoard(boardString)
+    fun doPassMove(boardStatusString: String): Pair<BoardModel, String> {
+        val board = HumanBoard(boardStatusString)
         board.doPassMove()
-        return BoardModel(board) to board.toBoardString()
+        return BoardModel(board) to board.toBoardStatusString()
     }
 
 
-    fun takeBackLastMove(boardString: String): Pair<BoardModel, String> {
-//        val board = HumanBoard(boardString)
+    fun takeBackLastMove(boardStatusString: String): Pair<BoardModel, String> {
+        val board = HumanBoard(boardStatusString)
         board.takeBack()
-        return BoardModel(board) to board.toBoardString()
+        return BoardModel(board) to board.toBoardStatusString()
     }
 
-//    fun computeAndExecuteNextMove(boardString: String): Pair<BoardModel, String> {
+//    fun computeAndExecuteNextMove(boardStatusString : String): Pair<BoardModel, String> {
 //        return BoardModel(BitBoard()) to ""
 //    }
 //
-//    fun getComputeStatusInfo(boardString: String): ComputeStatusInfo {
+//    fun getComputeStatusInfo(boardStatusString : String): ComputeStatusInfo {
 //        return ComputeStatusInfo(genius.getInfo())
 //    }
 //

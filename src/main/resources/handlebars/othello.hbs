@@ -40,6 +40,14 @@
                 display: inline-block;
             }
 
+            .buttonsquare {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 70px;
+                height: 60px;
+                font-size: 14px;
+            }
             .tableborder {
                 border-collapse: collapse;
                 border: 1px solid black;
@@ -88,14 +96,14 @@
                         <td>Winnaar</td>
                     </tr>
                     <tr>
-                        <td><div class="square"><div id="whoistomove" class="smalldot"></div></div></td>
-                        <td><div class="square"><div id="winner" class="smalldot"></div></div></td>
-                        <td><div class="square"><button id="buttonNew" onclick="newGame()">New game</button></div></td>
-                        <td><div class="square"><button id="buttonTakeback" onclick="takebackLastMove()">Take Back</button></div></td>
-                        <td><div class="square"><button id="buttonPassMove" onclick="doPassMove()">Pass Move</button></div></td>
-                        <td><div class="square"><button id="buttonCompute" onclick="computeMove()">Compute Move</button></div></td>
-                        <td><div class="square"><input type="checkbox" id="useComputerPlayer" name="useComp" value="useComp"><label for="useComp"> Play vs Computer</label></div></td>
-                        <td><div class="square"><input hidden type="number" id="searchDepth" min="1" max="42" step="1" value="7" size="6"></div></td>
+                        <td><div class="buttonsquare"><div id="whoistomove" class="smalldot"></div></div></td>
+                        <td><div class="buttonsquare"><div id="winner" class="smalldot"></div></div></td>
+                        <td><div class="buttonsquare"><button id="buttonNew" onclick="newGame()">New game</button></div></td>
+                        <td><div class="buttonsquare"><button id="buttonTakeback" onclick="takebackLastMove()">Take Back</button></div></td>
+                        <td><div class="buttonsquare"><button id="buttonPassMove" onclick="doPassMove()">Pass Move</button></div></td>
+                        <td><div class="buttonsquare"><button id="buttonCompute" onclick="computeMove()">Compute Move</button></div></td>
+                        <td><div class="buttonsquare"><input type="checkbox" id="useComputerPlayer" name="useComp" value="useComp"><label for="useComp"> Play vs Computer</label></div></td>
+                        <td><div class="buttonsquare"><input hidden type="number" id="searchDepth" min="1" max="42" step="1" value="7" size="6"></div></td>
                     </tr>
                 </table>
                 <table class="table2">
@@ -169,7 +177,7 @@
 //                 showWinner(board)
                 showActionButtons(board)
 //                 showComputerResult(board.searchResult)
-//                 showMiscellanious(board)
+                showMiscellanious(board)
             }
 
             function showFields(board) {

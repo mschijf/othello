@@ -2,28 +2,7 @@ package com.othello.game
 
 import com.othello.bit.Bit64
 import com.othello.bit.Bit64Math
-
-
-//           BitBoard                               Human (0-based) Board
-//
-//  --- --- --- --- --- --- --- ---    RIJ --- --- --- --- --- --- --- ---
-// |63 |62 |61 |60 |59 |58 |57 |56 |     0|   |   |   |   |   |   |   |   |
-//  --- --- --- --- --- --- --- ---        --- --- --- --- --- --- --- ---
-// |55 |   |   |   |   |   |   |48 |     1|   |   |   |   |   |   |   |   |
-//  --- --- --- --- --- --- --- ---        --- --- --- --- --- --- --- ---
-// |47 |   |   |   |   |   |   |40 |     2|   |   |   |   |   |   |   |   |
-//  --- --- --- --- --- --- --- ---        --- --- --- --- --- --- --- ---
-// |39 |   |   |   |   |   |   |32 |     3|   |   |   |   |   |   |   |   |
-//  --- --- --- --- --- --- --- ---        --- --- --- --- --- --- --- ---
-// |31 |   |   |   |   |   |   |24 |     4|   |   |   |   |   |   |   |   |
-//  --- --- --- --- --- --- --- ---        --- --- --- --- --- --- --- ---
-// |23 |   |   |   |   |   |   |16 |     5|   |   |   |   |   |   |   |   |
-//  --- --- --- --- --- --- --- ---        --- --- --- --- --- --- --- ---
-// |15 |   |   |   |   |   |   | 8 |     6|   |   |   |   |   |   |   |   |
-//  --- --- --- --- --- --- --- ---        --- --- --- --- --- --- --- ---
-// | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |     7|   |   |   |   |   |   |   |   |
-//  --- --- --- --- --- --- --- ---        --- --- --- --- --- --- --- ---
-//                                          0   1   2   3   4   5   6   7   KOLOM
+import java.util.*
 
 private const val RIGHT_BORDER = 0x01_01_01_01_01_01_01_01uL
 private const val LEFT_BORDER  = 0x80_80_80_80_80_80_80_80uL
@@ -49,6 +28,7 @@ open class BitBoard (initBoardWhite: Bit64?=null, initBoardBlack: Bit64?=null, i
 
     protected val board: Array<Bit64>
     protected var colorToMove: Int
+    protected val moveStack = Stack<Move>()
 
     init {
         if ((initBoardBlack != null) && initBoardWhite != null && initColorToMove != null) {
@@ -115,6 +95,7 @@ open class BitBoard (initBoardWhite: Bit64?=null, initBoardBlack: Bit64?=null, i
         val candNorthEast = getLeftHittingCandidate(NORTHEAST, bbToMove, bbWithoutSideBorder, bbEmpty)
         val candNorth = getLeftHittingCandidate(NORTH, bbToMove, bbOpponent, bbEmpty)
         val candNorthWest = getLeftHittingCandidate(NORTHWEST, bbToMove, bbWithoutSideBorder, bbEmpty)
+
         val candEast = getRightHittingCandidate(EAST, bbToMove, bbWithoutSideBorder, bbEmpty)
         val candSouthWest = getRightHittingCandidate(SOUTHWEST, bbToMove, bbWithoutSideBorder, bbEmpty)
         val candSouth = getRightHittingCandidate(SOUTH, bbToMove, bbOpponent, bbEmpty)
@@ -172,13 +153,20 @@ open class BitBoard (initBoardWhite: Bit64?=null, initBoardBlack: Bit64?=null, i
         board[colorToMove] = board[colorToMove] xor (move.discsFlipped or move.discPlayed)
         colorToMove = 1 - colorToMove
         board[colorToMove] = board[colorToMove] xor move.discsFlipped
+        moveStack.push(move)
     }
 
-    fun takeBack(move: Move) {
+    fun takeBack() {
+        val move = moveStack.pop()
         board[colorToMove] = board[colorToMove] xor move.discsFlipped
         colorToMove = 1 - colorToMove
         board[colorToMove] = board[colorToMove] xor (move.discsFlipped or move.discPlayed)
     }
 
-    //todo: endOfGame method maken (emptyFields == 0uL of twee keer gepast
+    fun isEndOfGame(): Boolean {
+        if ((board[WHITE] or board[BLACK]).inv() == 0uL)
+            return true
+        val top = moveStack.size
+        return moveStack.size > 2 && moveStack[top-1].isPass() && moveStack[top-2].isPass()
+    }
 }
