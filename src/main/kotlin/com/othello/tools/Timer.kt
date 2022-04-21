@@ -13,16 +13,15 @@ class Timer(
         ++level
     }
 
-    fun stopTimer(timerName: String, extraInfo: Int?=null, forcePrint : Boolean=false):Long {
+    fun stopTimer(timerName: String, extraInfo: Long?=null, forcePrint : Boolean=false):Long {
         --level
         val timePassed = checkTimer(timerName)
-
         if (printAll || forcePrint) {
             print("%-40s: %,5d ms".format(leadingSpaces(level) + timerName, timePassed))
             if (extraInfo == null) {
                 println()
             } else {
-                println(" --> %,9d".format(extraInfo))
+                println(" --> %,15d".format(extraInfo))
             }
         }
         timerMap.remove(timerName)

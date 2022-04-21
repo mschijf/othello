@@ -2,7 +2,6 @@ package com.othello.game
 
 import com.othello.bit.Bit64
 import com.othello.bit.Bit64Math
-import java.util.*
 
 //           BitBoard                               Human (0-based) Board
 //
@@ -42,7 +41,7 @@ class HumanBoard(boardString: String = ""): BitBoard(
             for (i in 0 until moveList.length step 2) {
                 val col = moveList[i].digitToInt()
                 val row = moveList[i+1].digitToInt()
-                if (col == 8) {
+                if (col == 8 && row == 8) {
                     doPassMove()
                 } else {
                     doMove(col, row)
@@ -56,19 +55,18 @@ class HumanBoard(boardString: String = ""): BitBoard(
         initialBoardString +
                 DELIMITER +
                 moveStack
-                    .map { "%d%d".format(if (it.isPass()) 8 else bitToCol(it.discPlayed), if (it.isPass()) 8 else bitToRow(it.discPlayed)) }
+                    .map { if (it.isPass()) "88" else "%d%d".format(bitToCol(it.discPlayed), bitToRow(it.discPlayed)) }
                     .joinToString("")
 
     //------------------------------------------------------------------------------------------------------------------
 
     private fun colRowToBit(col: Int, row: Int) = 1uL shl ((7 - row) * 8 + (7 - col))
-    private fun bitToCol(bit: Bit64) = 7 - (Bit64Math.mostRightBitIndex(bit) % 8) //todo: passmove incorrect
+    private fun bitToCol(bit: Bit64) = 7 - (Bit64Math.mostRightBitIndex(bit) % 8)
     private fun bitToRow(bit: Bit64) = 7 - (Bit64Math.mostRightBitIndex(bit) / 8)
 
     fun isBlackToMove() = colorToMove == BLACK
     fun isBlackDisc(col: Int, row: Int) = (colRowToBit(col, row) and board[BLACK]) != 0uL
     fun isWhiteDisc(col: Int, row: Int) = (colRowToBit(col, row) and board[WHITE]) != 0uL
-    fun isEmpty(col: Int, row: Int) = ! (isWhiteDisc(col, row) || isBlackDisc(col,row))
 
     fun isPlayable(col: Int, row: Int) = (colRowToBit(col, row) and getAllCandidateMoves()) != 0uL
     fun mustPass() = getAllCandidateMoves() == 0uL
