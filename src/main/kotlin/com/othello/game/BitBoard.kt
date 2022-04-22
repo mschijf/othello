@@ -191,6 +191,7 @@ open class BitBoard (initBoardWhite: Bit64?=null, initBoardBlack: Bit64?=null, i
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+    //todo: performance winst: pas-zet niet in generate-moves
     fun perft(depth: Int): Long {
         if (depth == 0) {
             return 1

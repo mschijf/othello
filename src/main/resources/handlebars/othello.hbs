@@ -92,8 +92,16 @@
             <div class="grid-item">
                 <table>
                     <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td colspan="4"><input type="checkbox" checked id="showCandidateMoves" onclick="getBoard()" name="showCandidateMoves" value="showCandidateMoves"><label for="showCandidateMoves">Show Candidate Moves</label></td>
+                    </tr>
+                    <tr>
                         <td>Aan zet</td>
                         <td>Winnaar</td>
+                        <td></td>
+                        <td colspan="4"><input type="checkbox" id="useComputerPlayer" name="useComp" value="useComp"><label for="useComp"> Play vs Computer</label></td>
                     </tr>
                     <tr>
                         <td><div class="buttonsquare"><div id="whoistomove" class="smalldot"></div></div></td>
@@ -102,7 +110,6 @@
                         <td><div class="buttonsquare"><button id="buttonTakeback" onclick="takebackLastMove()">Take Back</button></div></td>
                         <td><div class="buttonsquare"><button id="buttonPassMove" onclick="doPassMove()">Pass Move</button></div></td>
                         <td><div class="buttonsquare"><button id="buttonCompute" onclick="computeMove()">Compute Move</button></div></td>
-                        <td><div class="buttonsquare"><input type="checkbox" id="useComputerPlayer" name="useComp" value="useComp"><label for="useComp"> Play vs Computer</label></div></td>
                         <td><div class="buttonsquare"><input hidden type="number" id="searchDepth" min="1" max="42" step="1" value="7" size="6"></div></td>
                     </tr>
                 </table>
@@ -156,7 +163,8 @@
 
             function setElementColor(element, modelColor, playable) {
                 var backgroundColor = toColor(modelColor)
-                if (playable) {
+                var showCandidate = document.getElementById("showCandidateMoves").checked
+                if (playable && showCandidate) {
                     element.style.backgroundColor = "rgb(0, 115, 0)"
                 } else {
                     element.style.backgroundColor = backgroundColor
