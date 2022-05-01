@@ -65,21 +65,10 @@
 
 <!--    flexcontainer-->
 
-    <body onload="getBoard()">
+    <body onload="createBoard()">
         <div class="grid-container">
             <div class="grid-item">
-                <table class="tableborder">
-                    {{#each fields}}
-                    <tr class="tableinner">
-                        {{#each this}}
-                        <td class="tableinner">
-                            <div class="square">
-                                <div id="field{{this.col}}{{this.row}}" class="dot" onclick="executeMove({{this.col}}, {{this.row}})"></div>
-                            </div>
-                        </td>
-                        {{/each}}
-                    </tr>
-                    {{/each}}
+                <table class="tableborder" id="boardTable">
                 </table>
             </div>
             <div class="grid-item">
@@ -149,6 +138,30 @@
         <script>
             function toFieldId(col, row) {
                 return "field" + col + "" + row
+            }
+
+            function createTableBoard(sizes) {
+                var table = document.getElementById("boardTable");
+
+                for (let row = 0; row < sizes.maxRow; row++) {
+                    var tableRow = table.insertRow(row);
+                    tableRow.className = "tableinner"
+                    for (let col = 0; col < sizes.maxCol; col++) {
+                        var cell = tableRow.insertCell(col);
+                        cell.className = "tableinner"
+
+                        var outerDiv = document.createElement("div");
+                        outerDiv.className = "square"
+                        cell.appendChild(outerDiv)
+
+                        var innerDiv = document.createElement("div");
+                        innerDiv.className = "dot"
+                        innerDiv.id = toFieldId(col, row)
+                        innerDiv.onclick = function(){executeMove(col, row)}
+                        outerDiv.appendChild(innerDiv)
+                    }
+                }
+                getBoard()
             }
 
             function toColor(modelColor) {
@@ -332,6 +345,19 @@
                         var board = JSON.parse(this.responseText);
                         showBoard(board);
                         getComputeStatusInfo()
+                    }
+                };
+                request.send();
+            }
+
+            function createBoard() {
+                var request = new XMLHttpRequest();
+
+                request.open("GET", "api/v1/board/sizes");
+                request.onreadystatechange = function() {
+                    if(this.readyState === 4 && this.status === 200) {
+                        var sizes = JSON.parse(this.responseText);
+                        createTableBoard(sizes);
                     }
                 };
                 request.send();

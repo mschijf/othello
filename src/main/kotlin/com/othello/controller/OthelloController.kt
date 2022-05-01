@@ -1,6 +1,9 @@
 package com.othello.controller
 
 import com.othello.controller.model.BoardModel
+import com.othello.controller.model.MAX_COL
+import com.othello.controller.model.MAX_ROW
+import com.othello.controller.model.SizeModel
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.Cookie
@@ -13,6 +16,11 @@ const val DEFAULT_BOARD = ""
 @RestController
 @RequestMapping(REQUESTPATH_BASE)
 class OthelloController @Autowired constructor(private val gameService: GameService) {
+
+    @GetMapping("/board/sizes")
+    fun getSizes(): SizeModel {
+        return SizeModel(MAX_ROW, MAX_COL)
+    }
 
     @GetMapping("/board/")
     fun getBoard(@CookieValue(value = BOARD_COOKIE, defaultValue = DEFAULT_BOARD) boardStatusString: String): BoardModel {

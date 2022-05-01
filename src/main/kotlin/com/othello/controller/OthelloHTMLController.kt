@@ -17,7 +17,7 @@ class OthelloHTMLController() {
         val loader: TemplateLoader = ClassPathTemplateLoader("/handlebars", ".hbs")
         val handlebars = Handlebars(loader)
         val template: Template = handlebars.compile("othello")
-        return template.apply(BoardModel(HumanBoard()))
+        return template.apply(null)
     }
 }
 
